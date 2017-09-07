@@ -99,7 +99,10 @@
 	        | 
 	        */
 	        $this->alert        = array();
-	                
+	        
+
+
+
 
 	        
 	        /* 
@@ -276,7 +279,8 @@
 	    }
 
 		public function getIndex(){
-		
+			//$this->alert[] = ["message"=>"Su equipo no pertenece a este encuentro","type"=>"danger"];
+			
 			//Datos Basicos
 			$data['page_title'] = "Plantilla";
 			
@@ -286,7 +290,28 @@
 			}
 			
 			$app_encuentro = DB::table('app_encuentro')->where('id',$id_app_encuentro)->first();
-			$app_equipo = DB::table('app_equipo')->whereIn('id', [$app_encuentro->id_app_equipolocal,$app_encuentro->id_app_equipovisita])->get();
+			
+			if( CRUDBooster::myPrivilegeId() == 1 ) {
+				$app_equipo = DB::table('app_equipo')->whereIn('id', [$app_encuentro->id_app_equipolocal,$app_encuentro->id_app_equipovisita])->get();
+			}
+			else
+			{
+				$myTeams = DB::table('app_equipoxusuario')->where('id_cms_users', CRUDBooster::myId())->get();
+				$arrIds = array();
+				foreach($myTeams as $app)
+				{ $arrIds[] = $app->id_app_equipo;}
+				
+				$app_equipo = DB::table('app_equipo')
+				->whereIn('id', [$app_encuentro->id_app_equipolocal,$app_encuentro->id_app_equipovisita])
+				->whereIn('id', $arrIds)
+				->get();
+				
+				if( sizeof($app_equipo) == 0 || $app_equipo == null){
+					//echo 'aaa';
+					$this->alert[] = ["message"=>"Su equipo no pertenece a este encuentro","type"=>"danger"];	
+				}
+				
+			}
 			
 			$id_app_equipo = g('id_app_equipo');
 			if( $id_app_equipo == null ){
@@ -308,14 +333,16 @@
 			$jugadoresxencuentro = DB::table('app_jugador')
             ->Join('app_encuentroxplantilla', 'app_jugador.id', '=', 'app_encuentroxplantilla.id_app_jugador')
 			->where('app_encuentroxplantilla.id_app_equipo',$id_app_equipo)
-            ->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
+            ->select('app_jugador.*')->orderBy('app_encuentroxplantilla.valPosicion')->get();
 			
+			$data['alerts'] = $this->alert;
 			$data['jugadoresxencuentro'] = $jugadoresxencuentro;
 			$data['jugadoresFederados']= $jugadoresFederados;
 			$data['id_app_encuentro']= $id_app_encuentro;
 			$data['app_equipo']= $app_equipo;
 			$data['app_plantilla']= $app_plantilla;
 			$data['id_app_equipo']= $id_app_equipo;
+			$data['id_app_plantilla']= $id_app_plantilla;
 			return view('crudbooster::post_index_encuentroxplantilla',$data);
 			
 		}
@@ -359,6 +386,38 @@
 	  		return response()->json(['success'=>true]);
 		}	
 
+		public function postSaveTemplate() {
+	  		
+			$id_app_plantilla = Request::input('plantillaid');
+			$id_app_encuentro = Request::input('id_app_encuentro');
+			$id_app_jugador = Request::input('id_app_jugador');
+			$id_app_equipo = Request::input('id_app_equipo');
+			$post = Request::input('plantilla');
+	  		$post = json_decode($post,true);	  		
+
+			$idslist = array();
+						
+			DB::table('app_encuentroxplantilla')->where('id_app_encuentro',  $id_app_encuentro )
+												//->where('id_app_jugador',  $id_app_jugador )
+												->where('id_app_equipo',  $id_app_equipo )->delete();
+												
+			//Jugadores Marcados seleccionados
+			$valPosicion = 1;
+			foreach($post[0] as $ro) {
+	  			$pid = $ro['id'];
+
+				DB::table('app_encuentroxplantilla')->insert( 
+				[
+					'id_app_encuentro' => $id_app_encuentro, 
+					'id_app_equipo' => $id_app_equipo,
+					'id_app_jugador' => $pid ,
+					'valPosicion' => $valPosicion,'numCamiseta' => 0,'desObservacion' => '' ,'estRegistro' => 1 ]);
+
+				$valPosicion++;	  			
+	  		}
+
+	  		return response()->json(['success'=>true]);
+		}		
 		public function postExportPdf() {		
 		
 			//$view = view('crudbooster::pdf_encuentroxplantilla',$response)->render();			

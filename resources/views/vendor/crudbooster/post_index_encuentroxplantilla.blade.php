@@ -98,17 +98,61 @@
               position: absolute;
               /** Define arrowhead **/
 			  color:red;
-            }			
-         </style>
-         <script src='{{asset("vendor/crudbooster/assets/jquery-sortable-min.js")}}'></script>
-  <script type="text/javascript">
+            }	
+				
+			.jugadorTitular{
+				color:blue;
+			}
+			.jugadorNS{
+				color:black;
+			}			
+			.jugadorSuplente{
+				color:red;
+			}
+			.numberCircle {
+				border-radius: 50%;
+				width: 25px; 
+				font-size: 12px;
+				border: 2px solid #666;
+				display: inline-block;
+			}
+			.numberCircle span {
+				text-align: center;
+				line-height: 12px;
+				display: block;
+			}
+        </style>
+        <script src='{{asset("vendor/crudbooster/assets/jquery-sortable-min.js")}}'></script>
+		<script type="text/javascript">
   
+  
+		function UpdateList(){
+			$( ".draggable-menu-active li" ).each(function( index ) {
+				if(index+1<=15)
+				{
+					$( this ).find('span').html(index+1);
+					$( this ).find('span').removeClass();
+					$( this ).find('span').addClass('jugadorTitular');
+				
+				}else{
+					$( this ).find('span').html(index+1);
+					$( this ).find('span').removeClass();
+					$( this ).find('span').addClass('jugadorSuplente');
+				}
+			});
+			$( ".draggable-menu-inactive li" ).each(function( index ) {
+				$( this ).find('span').html('X');
+				$( this ).find('span').removeClass();
+				$( this ).find('span').addClass('jugadorNS');
+
+			});			
+		}
            $(function  () {
             var id_app_encuentro 	= {{$id_app_encuentro}};
 			var id_app_equipo 		= {{$id_app_equipo}};
             var sortactive = $(".draggable-menu").sortable({
               group: '.draggable-menu',  
-              delay:200,               
+              delay:200,    
               isValidTarget: function ($item, container) {
                   var depth = 1, // Start with a depth of one (the element itself)
                       maxDepth = 2,
@@ -122,46 +166,42 @@
                       depth++;
                       children = children.find('ul').first().find('li');
                   }
-
+					
                   return depth <= maxDepth;
               },                       
-              onDrop: function ($item, container, _super) {                                                    
-
+              onDrop: function ($item, container, _super) {    
+				$(this).sortable('cancel');
+				//event.preventDefault();
+				//return false;
                 if($item.parents('ul').hasClass('draggable-menu-active')) {
                   var isActive = 1;
                   var data = $('.draggable-menu-active').sortable("serialize").get();
-				  $('.draggable-menu-inactive').css("color", "blue");
-				  
 				  
                   var jsonString = JSON.stringify(data, null, ' '); 
 				  var idLeft = $item.attr("data-id");
-				    alert(idLeft);
-					$.post("{{route('AdminAppEncuentroxplantillaControllerPostAddSaveTemplate')}}",{id_app_equipo:id_app_equipo, id_app_encuentro: id_app_encuentro, id_app_jugador:idLeft},function(resp) {
+
+					$.post("{{route('AdminAppEncuentroxplantillaControllerPostSaveTemplate')}}",{plantilla:jsonString,id_app_equipo:id_app_equipo, id_app_encuentro: id_app_encuentro, id_app_jugador:idRight},function(resp) {
 						$('#menu-saved-info').fadeIn('fast').delay(1000).fadeOut('fast');
 					});
-					//$('.draggable-menu-active').css("color", "red");
-					
-					//$('.draggable-menu-active').sortable("refresh")
+					UpdateList();
 					$('#inactive_text').remove();
                 }else{
 				
                   var isActive = 0;
-                  var dataInactive = $('.draggable-menu-inactive').sortable("serialize").get();
+                  //var dataInactive = $('.draggable-menu-inactive').sortable("serialize").get();
+				  var data = $('.draggable-menu-active').sortable("serialize").get();
                   var jsonString = JSON.stringify(data, null, ' ');
-				  //$('.draggable-menu-inactive').css("color", "red");
-				   var idRight = $item.attr("data-id");
-				  alert(idRight);
-				  //alert(JSON.stringify(dataInactive));
-				  
-				  //<i class='icon-is-dashboard fa fa-dashboard'></i> #1  <button class="delete">Delete</button>
-					$.post("{{route('AdminAppEncuentroxplantillaControllerPostDeleteSaveTemplate')}}",{id_app_equipo:id_app_equipo, id_app_encuentro: id_app_encuentro, id_app_jugador:idRight},function(resp) {
+				  var idRight = $item.attr("data-id");
+
+					$.post("{{route('AdminAppEncuentroxplantillaControllerPostSaveTemplate')}}",{plantilla:jsonString,id_app_equipo:id_app_equipo, id_app_encuentro: id_app_encuentro, id_app_jugador:idRight},function(resp) {
 						$('#menu-saved-info').fadeIn('fast').delay(1000).fadeOut('fast');
 					});
+					UpdateList();
 					
                   $('#inactive_text').remove();
                 }
 				 
-				//alert(jsonString);
+				
                 /*$.post("{{route('AdminAppPlantillaxjugadorControllerPostSaveTemplate')}}",{plantilla:jsonString,plantillaid:id_app_plantilla},function(resp) {
                   $('#menu-saved-info').fadeIn('fast').delay(1000).fadeOut('fast');
                 });*/
@@ -172,61 +212,14 @@
             });    
 
 
-
+			UpdateList();
           });
 		  $("#draggable-menu-active .delete").click(function() { 
 			$(this).parent().remove();
 		});
+		
          </script>
-		 
-   
-   
-   <script type="text/javascript">
-   /*
-   $(function  () {
-	  var adjustment;
 
-			$("ol.simple_with_animation").sortable({
-			  group: 'simple_with_animation',
-			  pullPlaceholder: false,
-			  // animation on drop
-			  onDrop: function  ($item, container, _super) {
-				var $clonedItem = $('<li/>').css({height: 0});
-				$item.before($clonedItem);
-				$clonedItem.animate({'height': $item.height()});
-
-				$item.animate($clonedItem.position(), function  () {
-				  $clonedItem.detach();
-				  _super($item, container);
-				});
-				
-				var data = $('ol.simple_with_animation').sortable("serialize").get();
-                  var jsonString = JSON.stringify(data, null, ' ');
-				 // alert( jsonString);
-			  },
-
-		  // set $item relative to cursor position
-		  onDragStart: function ($item, container, _super) {
-			var offset = $item.offset(),
-				pointer = container.rootGroup.pointer;
-
-			adjustment = {
-			  left: pointer.left - offset.left,
-			  top: pointer.top - offset.top
-			};
-
-			_super($item, container);
-		  },
-		  onDrag: function ($item, position) {
-			$item.css({
-			  left: position.left - adjustment.left,
-			  top: position.top - adjustment.top
-			});
-		  }
-		});
-	});
-	*/
-  </script>
   
 	<div class='row'>
 
@@ -262,84 +255,56 @@
             </div>
     
 		
-
-			
+	</div>
+	<div class='row'>		
 		<div class="col-sm-5">
 			<div class="panel panel-success">
 				<div class="panel-heading">
                     <strong>Jugadores seleccionados</strong> <span id='menu-saved-info' style="display:none" class='pull-right text-success'><i class='fa fa-check'></i> Actualizando !</span>
                 </div>
-			</div>
-			
-		
-			
 			<div class="panel-body clearfix">
 				<ol class="simple_with_animation vertical">
-				<ul class='draggable-menu draggable-menu-active'>
-					@foreach($jugadoresxencuentro as $c)
-					
-					<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
-						<div class='{{$menu->is_dashboard?"is-dashboard":""}}' title="{{$menu->is_dashboard?'This is setted as Dashboard':''}}">
-							<i class='{{($menu->is_dashboard)?"icon-is-dashboard fa fa-dashboard":$menu->icon}}'></i> {{$c->desApellidoPaterno}} {{$c->desNombre}} 
-						</div>
-					</li>
-					@endforeach	
+				<ul class='draggable-menu draggable-menu-inactive'>
+
+						@foreach($jugadoresFederados as $c)
+						<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
+							<div class='' title="">
+								<div class="numberCircle"><span>X</span></div>
+								<i class='fa fa-user'></i>
+								{{$c->desApellidoPaterno}} {{$c->desNombre}} 
+							</div>
+						</li>
+						@endforeach					
 				</ul>
 				</ol>
 			</div>
+			</div>
 		</div>
 	
-		<div class="col-sm-5">
+		<div class="col-sm-7">
 			<div class="panel panel-success">
 				<div class="panel-heading">
                     <strong>Jugadores disponibles</strong> <span id='menu-saved-info' style="display:none" class='pull-right text-success'><i class='fa fa-check'></i> Actualizando !</span>
                 </div>
-			</div>
-			 
-			 
-			<div class="panel-body clearfix">
-				<ol class="simple_with_animation vertical">
-				<ul class='draggable-menu draggable-menu-inactive'>
-					@foreach($jugadoresFederados as $c)
+				<div class="panel-body clearfix">
+					<ol class="simple_with_animation vertical">
+					<ul class='draggable-menu draggable-menu-active'>
+					@foreach($jugadoresxencuentro as $c)
+					
 					<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
-						<div class='{{$menu->is_dashboard?"is-dashboard":""}}' title="{{$menu->is_dashboard?'This is setted as Dashboard':''}}">
-							<i class='{{($menu->is_dashboard)?"icon-is-dashboard fa fa-dashboard":$menu->icon}}'></i> {{$c->desApellidoPaterno}} {{$c->desNombre}} 
+						<div class='' title="">
+							<div class="numberCircle"><span>1</span></div>
+							<i class='fa fa-user'></i>
+							{{$c->desApellidoPaterno}} {{$c->desNombre}} 
 						</div>
 					</li>
-					@endforeach
-				</ul>
-				</ol>
+					@endforeach	
+					</ul>
+					</ol>
+				</div>
 			</div>
 		</div>		
 	</div>
-	<!--
-	<div class="panel-body clearfix">
-		<ol class="simple_with_animation vertical">
-        <ul class='draggable-menu draggable-menu-active'>
-			
-			<li>
-				<div class='{{$menu->is_dashboard?"is-dashboard":""}}' title="{{$menu->is_dashboard?'This is setted as Dashboard':''}}">
-                    <i class='{{($menu->is_dashboard)?"icon-is-dashboard fa fa-dashboard":$menu->icon}}'></i> 
-						
-					</div>
-			</li>
-			
-		</ul>
-		</ol>
-	</div>	
-		
-	<div class='row'>
-		<div class="span4">
-			<ol class="simple_with_animation vertical">
-                
-			</ol>
-		</div>
-		<div class="span4">
-			<ol class="simple_with_animation vertical">
-			</ol>
-		</div>
-	</div>
-	-->
 	<!--END AUTO MARGIN-->
 
 @endsection

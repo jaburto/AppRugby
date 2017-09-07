@@ -160,42 +160,56 @@
 		
 		public function getAdd(){
 			
-			//$equipoPrivegio = DB::table('cms_privileges')->get();
-			//$privileges = DB::table('cms_privileges')->get();
-
-			$id_app_plantilla = Request::get('id_app_plantilla');
+			if( CRUDBooster::myPrivilegeId() == 1 )  {
+				$app_plantilla = DB::table('app_plantilla')->get();
+			}
+			
+			//Usuario Login
+			$id = CRUDBooster::myId();
+			
+			$teams = DB::table('app_equipoxusuario')
+				    ->where('id_cms_users', $id)
+			        ->get();
+			$arrIds = array();
+			foreach($teams as $app)
+			{
+				$arrIds[] = $app->id_app_equipo;
+			}
+			
+			$app_plantilla = DB::table('app_plantilla')->whereIn('id_app_equipo',$arrIds)->get();
+			
+			$id_app_plantilla = Request::input('id_app_plantilla');
 			if( $id_app_plantilla == null ){
-				$plantillaTemp = DB::table('app_plantilla')->first();
+				$plantillaTemp = DB::table('app_plantilla')->whereIn('id_app_equipo',$arrIds)->first();
 				$id_app_plantilla = $plantillaTemp->id;
 			}
 			
 			
-			
-		
-			
-			//$jugadoresDisponibles = DB::table('app_jugador')->get();
 			$jugadoresPlantilla = DB::table('app_jugador')
-            ->leftJoin('app_plantillaxjugador', 'app_jugador.id', '=', 'app_plantillaxjugador.id_app_jugador')
+            ->Join('app_plantillaxjugador', 'app_jugador.id', '=', 'app_plantillaxjugador.id_app_jugador')
 			->where('app_plantillaxjugador.id_app_plantilla',  $id_app_plantilla )
+			->whereIn('app_jugador.id_app_equipo',  $arrIds )
             ->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
 			
 			
-			$jugadoresDisponibles = DB::table('app_jugador')
-            ->leftJoin('app_plantillaxjugador', 'app_jugador.id', '=', 'app_plantillaxjugador.id_app_jugador')
-			//->where('app_plantillaxjugador.id_app_plantilla',  $id_app_plantilla )
-			->where('app_plantillaxjugador.id_app_jugador',  null )
-			->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
 			
+			
+			
+			$jugadoresDisponibles = DB::table('app_jugador')
+			->whereIn('app_jugador.id_app_equipo',  $arrIds )
+			->whereNotIn('app_jugador.id', function($q) use ($id_app_plantilla){
+				$q->select('app_plantillaxjugador.id_app_jugador')->from('app_plantillaxjugador')->where('id_app_plantilla', '=', $id_app_plantilla );
+			})
+			->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
+		
 			
 			$data['id_app_plantilla'] = $id_app_plantilla;			
 			$data['page_title'] = "Plantilla Por jugador";
-			$data['plantilla']  = DB::table('app_plantilla')->where('id_app_equipo',1)->get();
+			$data['plantilla']  = $app_plantilla;
 			$data['jugadores']  = $jugadoresDisponibles;
 			$data['plantillaxjugador']  = $jugadoresPlantilla;
 			
 			return view('crudbooster::post_add_plantillaxjugador',$data);
-			
-			//return view('crudbooster::post_add_plantilla',compact($page_title));
 		}
 		
 

@@ -16,9 +16,9 @@
 			$this->global_privilege = false;
 			$this->button_table_action = true;
 			$this->button_action_style = "button_icon_text";
-			$this->button_add = true;
+			$this->button_add = false;
 			$this->button_edit = true;
-			$this->button_delete = true;
+			$this->button_delete = false;
 			$this->button_detail = false;
 			$this->button_show = false;
 			$this->button_filter = false;
@@ -184,7 +184,19 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-	            
+			if( CRUDBooster::myPrivilegeId() == 1 )  return;
+			$id = CRUDBooster::myId();
+			
+			$query2 = DB::table('app_equipoxusuario')
+				    ->where('id_cms_users', $id)
+			        ->get();
+			$arrIds = array();
+			foreach($query2 as $app)
+			{
+				$arrIds[] = $app->id_app_equipo;
+			}
+			
+			$query->whereIn('id_app_equipo', $arrIds );	            
 	    }
 
 	    /*

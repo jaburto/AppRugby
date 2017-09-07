@@ -155,40 +155,64 @@
   </script>
   
 	<div class='row'>
-	
-	
-	
-         
             <div class='col-sm-12'>
 
               <form method='get' action='' id='form-privilege'>
                 <div class='form-group'>
-                <label class='label-control'>Plantillas Disponibles</label>
-                <select class='form-control' onChange="$('#form-privilege').submit()" name='id_app_plantilla'>                  
-                    @foreach($plantilla as $p)
-                      <option value='{{$p->id}}' {{($id_app_plantilla == $p->id)?"selected":""}}>{{$p->desPlantilla}}</option>
-                    @endforeach
-                </select>
+					<label class='label-control'>Plantillas Disponibles</label>
+					<select class='form-control' onChange="$('#form-privilege').submit()" name='id_app_plantilla'>                  
+						@foreach($plantilla as $p)
+						  <option value='{{$p->id}}' {{($id_app_plantilla == $p->id)?"selected":""}}>{{$p->desPlantilla}}</option>
+						@endforeach
+					</select>
+					<label class='label-control'>Mostrar todos los jugadores</label>
                 </div>
               </form>
             </div>
-         
-		 
-		
+    </div>        
+	<div class='row'>
 		<div class="col-sm-5">
-		<div class="panel panel-success">
+			<div class="panel panel-success">
 				<div class="panel-heading">
-                    <strong>Jugadores seleccionados</strong> <span id='menu-saved-info' style="display:none" class='pull-right text-success'><i class='fa fa-check'></i> Actualizando !</span>
+                    <strong>Listado de Jugadores Disponibles</strong> 
+					<span id='menu-saved-info' style="display:none" class='pull-right text-success'>
+						<i class='fa fa-check'></i> Actualizando !
+					</span>
                 </div>
+				<div class="panel-body clearfix">
+					<ol class="simple_with_animation vertical">
+					<ul class='draggable-menu draggable-menu-active'>
+						@foreach($jugadores as $c)
+						<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
+							<div class='' title="{{$c->desApellidoPaterno}} {{$c->desNombre}} ">
+								<i class='fa fa-user'></i>
+								{{$c->desApellidoPaterno}} {{$c->desNombre}} 
+							</div>
+						</li>
+						@endforeach
+					</ul>
+					</ol>
+				</div>
 			</div>
+		</div>	
+
+		<div class="col-sm-7">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+                    <strong>Jugadores seleccionados</strong> 
+					<span id='menu-saved-info' style="display:none" class='pull-right text-success'>
+						<i class='fa fa-check'></i> Actualizando !
+					</span>
+                </div>
+			
 			<div class="panel-body clearfix">
 				<ol class="simple_with_animation vertical">
 				<ul class='draggable-menu draggable-menu-active'>
 					
-					@foreach($plantillaxjugador as $c)
-					<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
-						<div class='{{$menu->is_dashboard?"is-dashboard":""}}' title="{{$menu->is_dashboard?'This is setted as Dashboard':''}}">
-							<i class='{{($menu->is_dashboard)?"icon-is-dashboard fa fa-dashboard":$menu->icon}}'></i> {{$c->desApellidoPaterno}} 			{{$c->desNombre}}   
+					@foreach($plantillaxjugador as $pj)
+					<li data-id='{{$pj->id}}' data-name='{{$pj->desNombre}}'>
+						<div class='' title="{{$pj->desApellidoPaterno}} {{$pj->desNombre}}">
+							<i class='fa fa-user'></i> {{$pj->desApellidoPaterno}} {{$pj->desNombre}}   
 							
 						</div>
 					</li>
@@ -197,28 +221,6 @@
 				</ul>
 				</ol>
 			</div>
-		</div>
-	
-		<div class="col-sm-5">
-			<div class="panel panel-success">
-				<div class="panel-heading">
-                    <strong>Jugadores disponibles</strong> <span id='menu-saved-info' style="display:none" class='pull-right text-success'><i class='fa fa-check'></i> Actualizando !</span>
-                </div>
-			</div>
-			 
-			 
-			<div class="panel-body clearfix">
-				<ol class="simple_with_animation vertical">
-				<ul class='draggable-menu draggable-menu-active'>
-					@foreach($jugadores as $c)
-					<li data-id='{{$c->id}}' data-name='{{$c->desNombre}}'>
-						<div class='{{$menu->is_dashboard?"is-dashboard":""}}' title="{{$menu->is_dashboard?'This is setted as Dashboard':''}}">
-							<i class='{{($menu->is_dashboard)?"icon-is-dashboard fa fa-dashboard":$menu->icon}}'></i> {{$c->desApellidoPaterno}} {{$c->desNombre}} 
-						</div>
-					</li>
-					@endforeach
-				</ul>
-				</ol>
 			</div>
 		</div>		
 	</div>

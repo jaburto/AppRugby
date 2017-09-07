@@ -21,7 +21,7 @@
 			$this->button_delete = true;
 			$this->button_detail = true;
 			$this->button_show = true;
-			$this->button_filter = true;
+			$this->button_filter = false;
 			$this->button_import = false;
 			$this->button_export = false;
 			$this->table = "app_campeonatoxequipo";
@@ -31,8 +31,8 @@
 			$this->col = [];
 			$this->col[] = ["label"=>"App Campeonato","name"=>"id_app_campeonato","join"=>"app_campeonato,desNombre"];
 			$this->col[] = ["label"=>"App Equipo","name"=>"id_app_equipo","join"=>"app_equipo,desNombre"];
-			$this->col[] = ["label"=>"DesObservacion","name"=>"desObservacion"];
-			$this->col[] = ["label"=>"EstRegistro","name"=>"estRegistro","join"=>"view_estadoregistro,label"];
+			//$this->col[] = ["label"=>"Observacion","name"=>"desObservacion"];
+			$this->col[] = ["label"=>"Estado","name"=>"estRegistro","join"=>"view_estadoregistro,label"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -40,7 +40,7 @@
 			$this->form[] = ["label"=>"App Campeonato","name"=>"id_app_campeonato","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_campeonato,desTitulo"];
 			$this->form[] = ["label"=>"App Equipo","name"=>"id_app_equipo","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_equipo,desNombre"];
 			$this->form[] = ["label"=>"DesObservacion","name"=>"desObservacion","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"EstRegistro","name"=>"estRegistro","type"=>"select","validation"=>"required","width"=>"col-sm-10","datatable"=>"view_estadoregistro,label"];
+			$this->form[] = ["label"=>"Estado","name"=>"estRegistro","type"=>"select","validation"=>"required","width"=>"col-sm-10","datatable"=>"view_estadoregistro,label"];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			/* 

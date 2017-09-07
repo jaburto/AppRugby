@@ -40,7 +40,7 @@
 			$this->form[] = ["label"=>"Nombre","name"=>"desNombre","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Nombre Largo","name"=>"desNombreLargo","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Banner","name"=>"imgBanner","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"Logo","name"=>"imgLogo","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Logo","name"=>"imgLogo","type"=>"filemanager","validation"=>"","width"=>"col-sm-10","filemanager_type"=>"image"];
 			$this->form[] = ["label"=>"Lugar de Entrenamiento","name"=>"desEntrenamiento","type"=>"text","validation"=>"max:255","width"=>"col-sm-9"];
 			$this->form[] = ["label"=>"Horario de Entrenamiento","name"=>"desHorario","type"=>"text","validation"=>"max:255","width"=>"col-sm-9"];
 			$this->form[] = ["label"=>"Contacto Referencia","name"=>"desContacto","type"=>"text","validation"=>"max:255","width"=>"col-sm-9"];
@@ -100,7 +100,7 @@
 	        | 
 	        */
 	        $this->alert        = array();
-	                
+	        //$this->alert[] = ["message"=>"Lorem ipsum dolor sit amet, amet sit dolor ipsum lorem...","type"=>"info"];
 
 	        
 	        /* 
@@ -190,7 +190,6 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-			//			echo CRUDBooster::myPrivilegeId();
 			if( CRUDBooster::myPrivilegeId() == 1 )  return;
 			$id = CRUDBooster::myId();
 			
@@ -200,28 +199,11 @@
 			$arrIds = array();
 			foreach($query2 as $app)
 			{
-				//echo 'aa2-'.$app->id_app_equipo;
 				$arrIds[] = $app->id_app_equipo;
-				//array_push($arrIds ,$app->id_cms_users());
 			}
 			
 			$query->whereIn('app_equipo.id', $arrIds );
-			
-			
-	            /*
-				
-if( CRUDBooster::myPrivilegeId() == 1 )  return;
-			
-			$id = CRUDBooster::myId();
-			
-			$arrIds = array();
-			foreach($query1 as $o)
-			{
-				array_push($arrIds ,$o->id_app_equipo());
-			}
-			
-			$query->->whereIn('app_equipo.id', [1,2]);
-			*/
+
 	    }
 
 	    /*

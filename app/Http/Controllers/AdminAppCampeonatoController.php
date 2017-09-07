@@ -21,7 +21,7 @@
 			$this->button_delete = true;
 			$this->button_detail = true;
 			$this->button_show = true;
-			$this->button_filter = true;
+			$this->button_filter = false;
 			$this->button_import = false;
 			$this->button_export = false;
 			$this->table = "app_campeonato";
@@ -61,8 +61,8 @@
 	        | 
 	        */
 	        $this->sub_module = array();
-			$this->sub_module[] = ['label'=>'Equipos','path'=>'app_campeonatoxequipo','parent_columns'=>'desTitulo','button_color'=>'primary','button_icon'=>'fa fa-bars'];
-			$this->sub_module[] = ['label'=>'Fixture','path'=>'app_encuentro','parent_columns'=>'desNombre,numPeriodo','button_color'=>'primary','button_icon'=>'fa fa-bars','colslabel'=>'Nombre,Periodo'];
+			//$this->sub_module[] = ['label'=>'Equipos','path'=>'app_campeonatoxequipo','parent_columns'=>'desTitulo','button_color'=>'primary','button_icon'=>'fa fa-bars'];
+			//$this->sub_module[] = ['label'=>'Fixture','path'=>'app_encuentro','parent_columns'=>'desNombre,numPeriodo','button_color'=>'primary','button_icon'=>'fa fa-bars','colslabel'=>'Nombre,Periodo'];
 			
 
 
@@ -78,7 +78,8 @@
 	        | 
 	        */
 	        $this->addaction = array();
-			$this->addaction[] = ['label'=>'Tabla','icon'=>'fa fa-pay','color'=>'warning','url'=>CRUDBooster::mainpath('table-position').'/[id]'];
+			//$this->addaction[] = ['label'=>'Tabla','icon'=>'fa fa-pay','color'=>'warning','url'=>CRUDBooster::mainpath('table-position').'/[id]'];
+			
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -191,8 +192,13 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
+			
 	        //Your code here
-	            
+			if( CRUDBooster::myPrivilegeId() == 1 )
+				$this->addaction[] = ['label'=>'Tabla','icon'=>'fa fa-pay','color'=>'warning','url'=>CRUDBooster::mainpath('table-position').'/[id]'];
+
+			$this->sub_module[] = ['label'=>'Equipos','path'=>'app_campeonatoxequipo','parent_columns'=>'desNombre','button_color'=>'primary','button_icon'=>'fa fa-bars'];
+			$this->sub_module[] = ['label'=>'Fixture','path'=>'app_encuentro','parent_columns'=>'desNombre,numPeriodo','button_color'=>'primary','button_icon'=>'fa fa-bars'];
 	    }
 
 	    /*

@@ -21,9 +21,9 @@
 			$this->button_delete = true;
 			$this->button_detail = true;
 			$this->button_show = true;
-			$this->button_filter = true;
-			$this->button_import = true;
-			$this->button_export = true;
+			$this->button_filter = false;
+			$this->button_import = false;
+			$this->button_export = false;
 			$this->table = "app_encuentro";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -38,10 +38,10 @@
 			$this->col[] = ["label"=>"","name"=>"numPuntajeVisita"];
 			$this->col[] = ["label"=>"","name"=>"id"];//FALSE
 			$this->col[] = ["label"=>"Visita","name"=>"id_app_equipovisita","join"=>"app_equipo,desNombre"];
-			$this->col[] = ["label"=>"Estadio","name"=>"id_app_estadio","join"=>"app_estadio,desEstadio"];
-			$this->col[] = ["label"=>"Arbitro","name"=>"id_app_arbitro","join"=>"app_arbitro,desNombre"];
+			//$this->col[] = ["label"=>"Estadio","name"=>"id_app_estadio","join"=>"app_estadio,desEstadio"];
+			//$this->col[] = ["label"=>"Arbitro","name"=>"id_app_arbitro","join"=>"app_arbitro,desNombre"];
 			$this->col[] = ["label"=>"Estado","name"=>"estEncuentro","join"=>"view_estadoencuentro,label"];
-			$this->col[] = ["label"=>"","name"=>"id"]; //FALSE
+			$this->col[] = ["label"=>"","name"=>"id","visible"=>false]; //FALSE
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -77,8 +77,8 @@
 	        $this->sub_module = array();
 			/*
 			$this->sub_module[] = ['label'=>'Detail','path'=>'app_encuentrodetalle','parent_columns'=>'numFecha,id_app_equipolocal','button_color'=>'primary','button_icon'=>'fa fa-bars'];*/
-			$this->sub_module[] = ['label'=>'Fast','path'=>'app_encuentrodetallefast','parent_columns'=>'numFecha','button_color'=>'success','button_icon'=>'fa fa-bars'];			
-			$this->sub_module[] = ['label'=>'Plantilla','path'=>'app_encuentroxplantilla','parent_columns'=>'id_app_encuentro','button_color'=>'success','button_icon'=>'fa fa-bars'];			
+			$this->sub_module[] = ['label'=>'Puntos','path'=>'app_encuentrodetallefast','parent_columns'=>'numFecha','button_color'=>'success','button_icon'=>'fa fa-history'];			
+			$this->sub_module[] = ['label'=>'Players','path'=>'app_encuentroxplantilla','parent_columns'=>'id_app_encuentro','button_color'=>'success','button_icon'=>'fa fa-users','showIf'=>'[estEncuentro] == "1"'];			
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -92,7 +92,6 @@
 	        | 
 	        */
 	        $this->addaction = array();
-
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -140,6 +139,8 @@
 	        */
 	        $this->table_row_color = array();     	          
 			$this->table_row_color[] = ["condition"=>"[estEncuentro] == 9","color"=>"danger"];
+			$this->table_row_color[] = ["condition"=>"[estEncuentro] == 1","color"=>"info"];
+			$this->table_row_color[] = ["condition"=>"[estEncuentro] == 8","color"=>"warning"];
 	        
 	        /*
 	        | ---------------------------------------------------------------------- 
@@ -150,7 +151,8 @@
 	        */
 	        $this->index_statistic = array();
 			$query1 = DB::table('app_encuentro')
-				    ->where('id_app_campeonato', '=', $_GET['parent_id'])
+				    ->where('id_app_campeonato', '=', g('parent_id') )
+					->whereIn('estEncuentro', [10,5])
 			        ->groupBy('id_app_campeonato')
 					->count();
 					
@@ -160,19 +162,19 @@
 					->where('app_encuentrodetallefast.id_app_accion', '=', 1)
 			        ->sum('numTotal');
 			$query3 = DB::table('app_encuentro')
-				    ->where('id_app_campeonato', '=', $_GET['parent_id'])
+				    ->where('id_app_campeonato', '=', g('parent_id') )
 					->where('estEncuentro', '=', 9)
 			        ->groupBy('id_app_campeonato')
 					->count();		
-			$query4 = DB::table('app_encuentro')
-				    ->where('id_app_campeonato', '=', $_GET['parent_id'])
-					->where('estEncuentro', '=', 10)
+			$queryWO = DB::table('app_encuentro')
+				    ->where('id_app_campeonato', '=', g('parent_id') )
+					->where('estEncuentro', '=',8)
 			        ->groupBy('id_app_campeonato')
 					->count();					
 					//->count();					
 			$this->index_statistic[] = ['label'=>'Finalizados','count'=>$query1,'icon'=>'fa fa-check','color'=>'blue'];
 			$this->index_statistic[] = ['label'=>'Reprogramados','count'=>$query3,'icon'=>'fa fa-calendar-check-o','color'=>'yellow'];
-			$this->index_statistic[] = ['label'=>'W.O.','count'=>$query4,'icon'=>'fa fa-calendar-times-o','color'=>'red'];
+			$this->index_statistic[] = ['label'=>'W.O.','count'=>$queryWO,'icon'=>'fa fa-calendar-times-o','color'=>'red'];
 			$this->index_statistic[] = ['label'=>'Numero de tries','count'=>$query2,'icon'=>'fa fa-flash','color'=>'blue'];
 			//$this->index_statistic[] = ['label'=>'Try Man','count'=>'Juan Perez','icon'=>'fa fa-book','color'=>'blue'];
 			//$this->index_statistic[] = ['label'=>'max Try','count'=>'Newton','icon'=>'fa fa-book','color'=>'blue'];
@@ -233,6 +235,10 @@
 	    public function hook_query_index(&$query) {
 	        //Your code here
 	        //$query->where('is_protected',0);	
+			//$query->where('is_protected',0);	
+			
+			
+			//$this->sub_module[] = ['label'=>'Players2','path'=>'app_encuentroxplantilla','parent_columns'=>'id_app_encuentro','button_color'=>'success','button_icon'=>'fa fa-users'];			
 	    }
 
 	    /*
@@ -256,11 +262,12 @@
 				$column_value =  $this->getDetalle($id_app_encuentro,$isLocal);
 			} 
 			if($column_index==8){
-				$id_app_equipoVisita = $column_value;
+				//$id_app_equipoVisita = $column_value;
 			}
 			
+			
 			  
-						
+			
 	    	//Your code here
 			//$column_value['id_app_arbitro'] = 2;
 			//$column_value['id_app_estadio'] = 5;
@@ -538,10 +545,14 @@
 					$numSumPuntajefavor = $numSumPuntajefavor + $app_encuentro->numPuntajeLocal;
 					$numSumPuntajeContra = $numSumPuntajeContra + $app_encuentro->numPuntajeVisita;
 					
+					
 					$s = $this->getLastMatchString($app_encuentro->numPuntajeLocal, $app_encuentro->numPuntajeVisita);
                         if ($s === "WIN") {
                             $numPartidosGanados++;
                         } else if ($s === "LOST") {
+							if( $app_encuentro->estEncuentro == 8 ){
+								$numPartidosPerdidosWO++;
+							}
                             $numPartidosPerdidos++;
                             if (($app_encuentro->numPuntajeVisita - $app_encuentro->numPuntajeLocal) <= 7) {
                                 $sumBonus7++;
@@ -581,6 +592,9 @@
                         if ($s === "WIN") {
                             $numPartidosGanados++;
                         } else if ($s === "LOST") {
+							if( $app_encuentro->estEncuentro == 8 ){
+								$numPartidosPerdidosWO++;
+							}
                             $numPartidosPerdidos++;
                             if (($app_encuentro->numPuntajeLocal - $app_encuentro->numPuntajeVisita) <= 7) {
                                 $sumBonus7++;
@@ -611,7 +625,7 @@
 			    }
 				
 				
-				$puntaje = (4*$numPartidosGanados) + (2*$numPartidosEmpatados)+ (1*$sumBonus4)+ (1*$sumBonus7);
+				$puntaje = (4*$numPartidosGanados) + (2*$numPartidosEmpatados)+ (1*$sumBonus4)+ (1*$sumBonus7) - (1*$numPartidosPerdidosWO);
 				$numPromedioConv =  ($sumPartidosConTry>0)? ceil($sumEfectividadConv / $sumPartidosConTry):0;
 				//TODO
 				$nombreEquipo = ($id_app_campeonato == 7)?$app_equipo[0]->desNombreFemenino:$app_equipo[0]->desNombre;

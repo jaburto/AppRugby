@@ -149,7 +149,9 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+	        $this->script_js =  "
+				//$('#desNombre).disable(true);
+			";
 
 
 
@@ -193,7 +195,19 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-	            
+			if( CRUDBooster::myPrivilegeId() == 1 )  return;
+			$id = CRUDBooster::myId();
+			
+			$teams = DB::table('app_equipoxusuario')
+				    ->where('id_cms_users', $id)
+			        ->get();
+			$arrIds = array();
+			foreach($teams as $app)
+			{
+				$arrIds[] = $app->id_app_equipo;
+			}
+			
+			$query->whereIn('app_jugador.id_app_equipo', $arrIds );
 	    }
 
 	    /*
