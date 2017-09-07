@@ -77,7 +77,7 @@
 	        $this->sub_module = array();
 			/*
 			$this->sub_module[] = ['label'=>'Detail','path'=>'app_encuentrodetalle','parent_columns'=>'numFecha,id_app_equipolocal','button_color'=>'primary','button_icon'=>'fa fa-bars'];*/
-			$this->sub_module[] = ['label'=>'Puntos','path'=>'app_encuentrodetallefast','parent_columns'=>'numFecha','button_color'=>'success','button_icon'=>'fa fa-history'];			
+			$this->sub_module[] = ['label'=>'Detalle','path'=>'app_encuentrodetallefast','parent_columns'=>'numFecha','button_color'=>'success','button_icon'=>'fa fa-list-ol'];			
 			$this->sub_module[] = ['label'=>'Players','path'=>'app_encuentroxplantilla','parent_columns'=>'id_app_encuentro','button_color'=>'success','button_icon'=>'fa fa-users','showIf'=>'[estEncuentro] == "1"'];			
 
 	        /* 

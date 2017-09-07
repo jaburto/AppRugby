@@ -24,7 +24,7 @@ page-break-after: always;
 </style>
 
 
-<h3>Listado de jugadores</h3>
+<h3>LISTADO DE JUGADDORES</h3>
 <hr/>
 <p>
 	<label class="headPdf">CLUB : {{$app_equipo[0]->desNombreLargo}}</label>
@@ -40,8 +40,8 @@ page-break-after: always;
 	<tr>
 		<th width="3%">#</td>
 		<th width="13%">DNI</td>
-		<th width="52%">Nombre del jugador</td>
-		<th width="10%">Nro Camiseta</td>
+		<th width="52%">NOMBRE DEL JUGADOR</td>
+		<th width="10%">Nro CAMISETA</td>
 	</tr>
 	@foreach($jugadoresxencuentro as $c)
 	<tr>

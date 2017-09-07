@@ -125,7 +125,7 @@
 							<td class="field_date"> 05/04/2017 </td>
 							<td class="field_hour"> 14:00 </td>
 							<td class="field_imgA">
-								<img src="http://localhost:1024/simulador/logos/{{$row->imgLogoA}}" alt="Wales" width="50" height="50">
+								<img src="{{url('/')}}/{{$row->imgLogoA}}" alt="{img}" width="50" height="50">
 							</td>
 							<td class="field_nameA">{{$row->desNombreA}}</td>
 							<td class="field_score">
@@ -135,7 +135,7 @@
 							<td class="field_nameB">{{$row->desNombreB}}</td>
 								
 							<td class="field_imgB">
-								<img src="http://localhost:1024/simulador/logos/{{$row->imgLogoB}}" alt="Wales" width="50" height="50">
+								<img src="{{url('/')}}/{{$row->imgLogoB}}" alt="{img}" width="50" height="50">
 							</td>
 							<td class="field_estadio">
 							{{$row->desEstadio}}
