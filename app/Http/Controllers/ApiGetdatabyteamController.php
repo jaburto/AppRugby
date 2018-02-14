@@ -24,6 +24,7 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
+				
 				$id_app_equipo = g('id_app_equipo');//NAVY
 				$id_app_campeonato = g('id_app_campeonato');
 				$numFecha = g('numfecha');

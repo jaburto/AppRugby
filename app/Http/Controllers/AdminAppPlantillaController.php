@@ -30,9 +30,9 @@
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"App Equipo","name"=>"id_app_equipo","join"=>"app_equipo,desNombre"];
-			$this->col[] = ["label"=>"DesPlantilla","name"=>"desPlantilla"];
-			$this->col[] = ["label"=>"NumPeriodo","name"=>"numPeriodo"];
-			$this->col[] = ["label"=>"EstRegistro","name"=>"estRegistro","join"=>"view_estadoregistro,label"];
+			$this->col[] = ["label"=>"Nombre","name"=>"desPlantilla"];
+			$this->col[] = ["label"=>"Periodo","name"=>"numPeriodo"];
+			$this->col[] = ["label"=>"Estado","name"=>"estRegistro","join"=>"view_estadoregistro,label"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

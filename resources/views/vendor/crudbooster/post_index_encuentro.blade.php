@@ -26,17 +26,17 @@
 		padding-left:20px;
 	}
 	.field_nameA {
-		text-align: right;
+		text-align: center;
 		color: #FFF;
-		font-size: 1em;
+		font-size: 12px;
 		font-family: 'TradeG',Arial;
 		text-transform: uppercase;
 		font-weight: 900;
 	}
 	.field_nameB{
-		text-align: left;
+		text-align: center;
 		color: #FFF;
-		font-size: 1em;
+		font-size: 12px;
 		font-family: 'TradeG',Arial;
 		text-transform: uppercase;
 		font-weight: 900;
@@ -62,7 +62,7 @@
 		width : 150px;
 	}
 	.field_score{
-		width : 50px;
+		width : 60px;
 	}
 	.field_estadio{
 		width : 150px;

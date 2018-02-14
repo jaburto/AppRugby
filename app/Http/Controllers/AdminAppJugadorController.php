@@ -33,7 +33,7 @@
 			$this->col[] = ["label"=>"Apellido Paterno","name"=>"desApellidoPaterno"];
 			$this->col[] = ["label"=>"Apellido Materno","name"=>"desApellidoMaterno"];
 			$this->col[] = ["label"=>"Alias","name"=>"desAlias"];
-			$this->col[] = ["label"=>"ValPosicion","name"=>"valPosicion","join"=>"view_posicionjugador,label"];
+			$this->col[] = ["label"=>"Posicion","name"=>"valPosicion","join"=>"view_posicionjugador,label"];
 			$this->col[] = ["label"=>"Equipo","name"=>"id_app_equipo","join"=>"app_equipo,desNombre"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
@@ -44,13 +44,17 @@
 			$this->form[] = ["label"=>"Apellido Paterno","name"=>"desApellidoPaterno","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Apellido Materno","name"=>"desApellidoMaterno","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Alias","name"=>"desAlias","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"ImgFoto","name"=>"imgFoto","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"ValPosicion","name"=>"valPosicion","type"=>"select2","validation"=>"","width"=>"col-sm-10","datatable"=>"view_posicionjugador,label"];
-			$this->form[] = ["label"=>"DesHeight","name"=>"desHeight","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"DesWeight","name"=>"desWeight","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"Fecha nacimientio","name"=>"fecNacimiento","type"=>"date","validation"=>"required|date_format:Y-m-d","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"Descripción","name"=>"desDescripcion","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"Estado","name"=>"estRegistro","type"=>"number","validation"=>"required|integer|min:0","width"=>"col-sm-10"];
+			//$this->form[] = ["label"=>"ImgFoto","name"=>"imgFoto","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Foto","name"=>"imgFoto","type"=>"upload","validation"=>"","width"=>"col-sm-10","filemanager_type"=>"image"];
+			$this->form[] = ["label"=>"Posicion","name"=>"valPosicion","type"=>"select2","validation"=>"","width"=>"col-sm-10","datatable"=>"view_posicionjugador,label"];
+			$this->form[] = ["label"=>"Estatura (cms)","name"=>"desHeight","type"=>"text","validation"=>"required|min:0|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Peso (kg)","name"=>"desWeight","type"=>"text","validation"=>"required|min:0|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Fecha nacimiento","name"=>"fecNacimiento","type"=>"date","validation"=>"date_format:Y-m-d","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Descripción","name"=>"desDescripcion","type"=>"text","validation"=>"max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Pais","name"=>"valPais","type"=>"select","validation"=>"","width"=>"col-sm-10",
+			"dataquery"=>"select id as value,desValor as label from app_catalogodetalle where id_app_catalogo = 7"];
+			$this->form[] = ["label"=>"Estado","name"=>"estRegistro","type"=>"select","validation"=>"","width"=>"col-sm-10",
+			"datatable"=>"view_estadoregistro,label"];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			/* 

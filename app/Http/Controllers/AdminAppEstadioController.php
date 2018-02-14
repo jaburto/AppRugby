@@ -40,6 +40,8 @@
 			$this->form[] = ["label"=>"DesEstadio","name"=>"desEstadio","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"DesUbicacion","name"=>"desUbicacion","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"DesXY","name"=>"desXY","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Pais","name"=>"valPais","type"=>"select","validation"=>"","width"=>"col-sm-10",
+			"dataquery"=>"select id as value,desValor as label from app_catalogodetalle where id_app_catalogo = 7"];
 			$this->form[] = ["label"=>"EstRegistro","name"=>"estRegistro","type"=>"number","validation"=>"required|integer|min:0","width"=>"col-sm-10"];
 			# END FORM DO NOT REMOVE THIS LINE
 

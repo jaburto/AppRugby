@@ -194,8 +194,10 @@
 	    public function hook_query_index(&$query) {
 			
 	        //Your code here
-			if( CRUDBooster::myPrivilegeId() == 1 )
+			if( CRUDBooster::myPrivilegeId() == 1 ){
 				$this->addaction[] = ['label'=>'Tabla','icon'=>'fa fa-pay','color'=>'warning','url'=>CRUDBooster::mainpath('table-position').'/[id]'];
+				$this->sub_module[] = ['label'=>'Sanciones','path'=>'app_campeonatoxsancion','parent_columns'=>'desNombre','button_color'=>'danger','button_icon'=>'fa fa-exclamation'];
+			}
 
 			$this->sub_module[] = ['label'=>'Equipos','path'=>'app_campeonatoxequipo','parent_columns'=>'desNombre','button_color'=>'primary','button_icon'=>'fa fa-bars'];
 			$this->sub_module[] = ['label'=>'Fixture','path'=>'app_encuentro','parent_columns'=>'desNombre,numPeriodo','button_color'=>'primary','button_icon'=>'fa fa-bars'];

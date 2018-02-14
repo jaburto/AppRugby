@@ -5,7 +5,7 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminAppPlantillaxjugadorController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminAppCampeonatoxsancionController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function __construct() {
 
@@ -24,21 +24,25 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "app_plantillaxjugador";
+			$this->table = "app_campeonatoxsancion";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Plantilla","name"=>"id_app_plantilla","join"=>"app_plantilla,desPlantilla"];
-			$this->col[] = ["label"=>"Jugador","name"=>"id_app_jugador","join"=>"app_jugador,desNombre"];
-			$this->col[] = ["label"=>"FecCreacion","name"=>"fecCreacion"];
+			$this->col[] = ["label"=>"Campeonato","name"=>"id_app_campeonato","join"=>"app_campeonato,desNombre"];
+			$this->col[] = ["label"=>"Equipo","name"=>"id_app_equipo","join"=>"app_equipo,desNombre"];
+			$this->col[] = ["label"=>"Puntos","name"=>"numCantidad"];
+			$this->col[] = ["label"=>"Observacion","name"=>"desObervacion"];
+			$this->col[] = ["label"=>"Estado","name"=>"estRegistro","join"=>"view_estadoregistro,label"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ["label"=>"Plantilla","name"=>"id_app_plantilla","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_plantilla,id"];
-			$this->form[] = ["label"=>"Jugador","name"=>"id_app_jugador","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_jugador,id"];
-			$this->form[] = ["label"=>"FecCreacion","name"=>"fecCreacion","type"=>"date","validation"=>"required|date","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Campeonato","name"=>"id_app_campeonato","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_campeonato,desNombre"];
+			$this->form[] = ["label"=>"Equipo","name"=>"id_app_equipo","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_equipo,desNombre"];
+			$this->form[] = ["label"=>"Puntos","name"=>"numCantidad","type"=>"number","validation"=>"required|integer|min:0","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Obervacion","name"=>"desObervacion","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Activo / Inactivo","name"=>"estRegistro","type"=>"select","validation"=>"required","width"=>"col-sm-10","datatable"=>"view_estadoregistro,label", "value"=>"1"];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			/* 
@@ -150,68 +154,13 @@
 	        |
 	        */
 	        $this->load_js = array();
-			$this->load_js[] = asset("jquery-sortable.js");
+
 
 
 	        //No need chanage this constructor
 	        $this->constructor();
 	    }
-		
-		
-		public function getAdd(){
-			
-			if( CRUDBooster::myPrivilegeId() == 1 )  {
-				$app_plantilla = DB::table('app_plantilla')->get();
-			}
-			
-			//Usuario Login
-			$id = CRUDBooster::myId();
-			
-			$teams = DB::table('app_equipoxusuario')
-				    ->where('id_cms_users', $id)
-			        ->get();
-			$arrIds = array();
-			foreach($teams as $app)
-			{
-				$arrIds[] = $app->id_app_equipo;
-			}
-			
-			$app_plantilla = DB::table('app_plantilla')->whereIn('id_app_equipo',$arrIds)->get();
-			
-			$id_app_plantilla = Request::input('id_app_plantilla');
-			if( $id_app_plantilla == null ){
-				$plantillaTemp = DB::table('app_plantilla')->whereIn('id_app_equipo',$arrIds)->first();
-				$id_app_plantilla = $plantillaTemp->id;
-			}
-			
-			
-			$jugadoresPlantilla = DB::table('app_jugador')
-            ->Join('app_plantillaxjugador', 'app_jugador.id', '=', 'app_plantillaxjugador.id_app_jugador')
-			->where('app_plantillaxjugador.id_app_plantilla',  $id_app_plantilla )
-			->whereIn('app_jugador.id_app_equipo',  $arrIds )
-            ->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
-			
-			
-			
-			
-			
-			$jugadoresDisponibles = DB::table('app_jugador')
-			->whereIn('app_jugador.id_app_equipo',  $arrIds )
-			->whereNotIn('app_jugador.id', function($q) use ($id_app_plantilla){
-				$q->select('app_plantillaxjugador.id_app_jugador')->from('app_plantillaxjugador')->where('id_app_plantilla', '=', $id_app_plantilla );
-			})
-			->select('app_jugador.*')->orderBy('app_jugador.desApellidoPaterno')->get();
-		
-			
-			$data['id_app_plantilla'] = $id_app_plantilla;			
-			$data['page_title'] = "Plantilla Por jugador";
-			$data['plantilla']  = $app_plantilla;
-			$data['jugadores']  = $jugadoresDisponibles;
-			$data['plantillaxjugador']  = $jugadoresPlantilla;
-			
-			return view('crudbooster::post_add_plantillaxjugador',$data);
-		}
-		
+
 
 	    /*
 	    | ---------------------------------------------------------------------- 
@@ -325,33 +274,6 @@
 
 
 	    //By the way, you can still create your own method in here... :) 
-		public function postSaveTemplate() {
-	  		
-			$id_app_plantilla = Request::input('plantillaid');
-			$post = Request::input('plantilla');
-	  		$post = json_decode($post,true);	  		
 
-			$idslist = array();
-						
-			//Jugadores Marcados seleccionados
-			foreach($post[0] as $ro) {
-	  			$pid = $ro['id'];
-				$idslist[] = $pid;
-				$exitsRow = DB::table('app_plantillaxjugador')
-															->where('id_app_jugador',  $pid)
-															->where('id_app_plantilla',  $id_app_plantilla )
-															->count();
-				
-				if( $exitsRow == 0){
-				
-					DB::table('app_plantillaxjugador')->insert( ['id_app_jugador' => $pid, 'id_app_plantilla' => $id_app_plantilla]);
-				}	  			
-	  		}
-			//Lista Final de jugadores
-			DB::table('app_plantillaxjugador')->where('id_app_plantilla',  $id_app_plantilla )
-													  ->whereNotIn('id_app_jugador',  $idslist )->delete();
 
-	  		return response()->json(['success'=>true]);
-		}
-	
 	}

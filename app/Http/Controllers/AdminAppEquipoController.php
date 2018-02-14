@@ -39,6 +39,7 @@
 			$this->form = [];
 			$this->form[] = ["label"=>"Nombre","name"=>"desNombre","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Nombre Largo","name"=>"desNombreLargo","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"Nombre Femenino","name"=>"desNombreFemenino","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Banner","name"=>"imgBanner","type"=>"text","validation"=>"required|min:3|max:255","width"=>"col-sm-10"];
 			$this->form[] = ["label"=>"Logo","name"=>"imgLogo","type"=>"upload","validation"=>"","width"=>"col-sm-10","filemanager_type"=>"image"];
 			$this->form[] = ["label"=>"Lugar de Entrenamiento","name"=>"desEntrenamiento","type"=>"text","validation"=>"max:255","width"=>"col-sm-9"];
