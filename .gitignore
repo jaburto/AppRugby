@@ -1,8 +1,8 @@
 /node_modules
 /public/storage
-#/vendor
-/vendor/*
-!vendor/crocodicstudio/
+/vendor
+#/vendor/*
+#!vendor/crocodicstudio/
 /.idea
 Homestead.json
 Homestead.yaml
