@@ -741,7 +741,7 @@ class CRUDBooster  {
 	            }
 	        }
 
-	        //if(count($params['filter_column']) == 0) unset($params['filter_column']);
+	        if(count($params['filter_column']) == 0) unset($params['filter_column']);
 
 	        if(isset($params)) {
 	            $params['filter_column'][$key]['type'] = $type;
