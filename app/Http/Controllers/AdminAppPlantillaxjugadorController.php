@@ -38,7 +38,7 @@
 			$this->form = [];
 			$this->form[] = ["label"=>"Plantilla","name"=>"id_app_plantilla","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_plantilla,id"];
 			$this->form[] = ["label"=>"Jugador","name"=>"id_app_jugador","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_jugador,id"];
-			$this->form[] = ["label"=>"FecCreacion","name"=>"fecCreacion","type"=>"date","validation"=>"required|date","width"=>"col-sm-10"];
+			$this->form[] = ["label"=>"FecCreacion","name"=>"feccreacion","type"=>"date","validation"=>"required|date","width"=>"col-sm-10"];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			/*

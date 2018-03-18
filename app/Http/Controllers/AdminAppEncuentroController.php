@@ -428,13 +428,13 @@
 				$id_app_encuentrofecha = 1;
 			}
 			$fixture = DB::table('app_encuentro')
-					   ->join('app_equipo as equipoA', 'equipoA.id', '=', 'app_encuentro.id_app_equipolocal')
-					   ->join('app_equipo as equipoB', 'equipoB.id', '=', 'app_encuentro.id_app_equipovisita')
+					   ->join('app_equipo as equipoa', 'equipoa.id', '=', 'app_encuentro.id_app_equipolocal')
+					   ->join('app_equipo as equipob', 'equipob.id', '=', 'app_encuentro.id_app_equipovisita')
 					   ->join('app_estadio as estadio', 'estadio.id', '=', 'app_encuentro.id_app_estadio')
 					   ->join('view_estadoencuentro as estadoencuentro', 'estadoencuentro.id', '=', 'app_encuentro.estencuentro')
 			->select(
-			'equipoA.desnombre as desnombreA','equipoA.imgLogo as imgLogoA',
-			'equipoB.desnombre as desnombreB','equipoB.imgLogo as imgLogoB',
+			'equipoa.desnombre as desnombrea','equipoa.imgLogo as imglogoa',
+			'equipob.desnombre as desnombreb','equipob.imgLogo as imglogob',
 			'estadio.desEstadio as desEstadio',
 			'estadoencuentro.label as estencuentroLabel',
 			'app_encuentro.*')
@@ -474,11 +474,11 @@
 				$id_app_encuentrofecha = 1;
 			}
 			$fixture = DB::table('app_encuentro')
-					   ->join('app_equipo as equipoA', 'equipoA.id', '=', 'app_encuentro.id_app_equipolocal')
-					   ->join('app_equipo as equipoB', 'equipoB.id', '=', 'app_encuentro.id_app_equipovisita')
+					   ->join('app_equipo as equipoa', 'equipoa.id', '=', 'app_encuentro.id_app_equipolocal')
+					   ->join('app_equipo as equipob', 'equipob.id', '=', 'app_encuentro.id_app_equipovisita')
 					   ->join('app_estadio as estadio', 'estadio.id', '=', 'app_encuentro.id_app_estadio')
 					   ->join('view_estadoencuentro as estadoencuentro', 'estadoencuentro.id', '=', 'app_encuentro.estencuentro')
-			->select('equipoA.desnombre as desnombreA','equipoB.desnombre as desnombreB','estadio.desEstadio as desEstadio',
+			->select('equipoa.desnombre as desnombrea','equipob.desnombre as desnombreb','estadio.desEstadio as desEstadio',
 			'estadoencuentro.label as estencuentroLabel',
 			'app_encuentro.*')
 			->where('id_app_campeonato',$id_app_encuentrofecha )->orderBy('numfecha')
