@@ -48,7 +48,7 @@
 			$this->form = [];
 			$this->form[] = ["label"=>"Campeonato","name"=>"id_app_campeonato","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_campeonato,desnombre"];
 			$this->form[] = ["label"=>"Número de Fecha","name"=>"numfecha","type"=>"number","validation"=>"required|integer|min:0","width"=>"col-sm-10"];
-			$this->form[] = ["label"=>"Estadio","name"=>"id_app_estadio","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_estadio,desEstadio", "value"=>"5"];
+			$this->form[] = ["label"=>"Estadio","name"=>"id_app_estadio","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_estadio,desestadio", "value"=>"5"];
 			$this->form[] = ["label"=>"Arbitro","name"=>"id_app_arbitro","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_arbitro,desnombre", "value"=>"2"];
 			$this->form[] = ["label"=>"Equipo Local","name"=>"id_app_equipolocal","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_equipo,desnombre"];
 			$this->form[] = ["label"=>"Equipo Visita","name"=>"id_app_equipovisita","type"=>"select2","validation"=>"required|integer|min:0","width"=>"col-sm-10","datatable"=>"app_equipo,desnombre"];
@@ -478,7 +478,7 @@
 					   ->join('app_equipo as equipob', 'equipob.id', '=', 'app_encuentro.id_app_equipovisita')
 					   ->join('app_estadio as estadio', 'estadio.id', '=', 'app_encuentro.id_app_estadio')
 					   ->join('view_estadoencuentro as estadoencuentro', 'estadoencuentro.id', '=', 'app_encuentro.estencuentro')
-			->select('equipoa.desnombre as desnombrea','equipob.desnombre as desnombreb','estadio.desEstadio as desEstadio',
+			->select('equipoa.desnombre as desnombrea','equipob.desnombre as desnombreb','estadio.desestadio as desestadio',
 			'estadoencuentro.label as estencuentroLabel',
 			'app_encuentro.*')
 			->where('id_app_campeonato',$id_app_encuentrofecha )->orderBy('numfecha')
