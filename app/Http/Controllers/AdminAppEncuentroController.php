@@ -647,7 +647,7 @@
 					'numPuntajeFinal' => $puntaje,
 					'numtotalTry' => $sumTryLocal+$sumTryVisita,
 					'numPromedioConv' => $numPromedioConv,
-					'imgLogo' => $app_equipo[0]->imgLogo,
+					'imgLogo' => $app_equipo[0]->imglogo,
 					'e' => g('id')
 					);
 
