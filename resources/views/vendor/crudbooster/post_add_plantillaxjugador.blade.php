@@ -162,7 +162,7 @@
 					<label class='label-control'>Plantillas Disponibles</label>
 					<select class='form-control' onChange="$('#form-privilege').submit()" name='id_app_plantilla'>
 						@foreach($plantilla as $p)
-						  <option value='{{$p->id}}' {{($id_app_plantilla == $p->id)?"selected":""}}>{{$p->desPlantilla}}</option>
+						  <option value='{{$p->id}}' {{($id_app_plantilla == $p->id)?"selected":""}}>{{$p->desplantilla}}</option>
 						@endforeach
 					</select>
 					<label class='label-control'>Mostrar todos los jugadores</label>
