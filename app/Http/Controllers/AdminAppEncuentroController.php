@@ -435,7 +435,7 @@
 			->select(
 			'equipoa.desnombre as desnombrea','equipoa.imglogo as imglogoa',
 			'equipob.desnombre as desnombreb','equipob.imglogo as imglogob',
-			'estadio.desEstadio as desEstadio',
+			'estadio.desestadio as desestadio',
 			'estadoencuentro.label as estencuentroLabel',
 			'app_encuentro.*')
 			->where('id_app_campeonato',$id_app_campeonato)
