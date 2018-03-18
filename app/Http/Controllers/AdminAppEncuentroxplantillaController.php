@@ -326,7 +326,7 @@
 			->Join('app_plantillaxjugador', 'app_jugador.id', '=', 'app_plantillaxjugador.id_app_jugador')
 			->where('app_plantillaxjugador.id_app_plantilla',  $id_app_plantilla )
 			->whereNotIn('app_jugador.id', function($q){
-				$q->select('app_jugadorIn.id')->from('app_jugador as app_jugadorin')->Join('app_encuentroxplantilla', 'app_jugadorin.id', '=', 'app_encuentroxplantilla.id_app_jugador');
+				$q->select('app_jugadorin.id')->from('app_jugador as app_jugadorin')->Join('app_encuentroxplantilla', 'app_jugadorin.id', '=', 'app_encuentroxplantilla.id_app_jugador');
 			})
 			->select('app_jugador.*')->orderBy('app_jugador.desapellidopaterno')->get();
 
@@ -350,7 +350,7 @@
 	    //By the way, you can still create your own method in here... :)
 
 		public function postAddSaveTemplate() {
-	  		$id_app_encuentro = Request::input('id_app_encuentro');
+	  	$id_app_encuentro = Request::input('id_app_encuentro');
 			$id_app_jugador = Request::input('id_app_jugador');
 			$id_app_equipo = Request::input('id_app_equipo');
 
