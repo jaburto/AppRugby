@@ -433,8 +433,8 @@
 					   ->join('app_estadio as estadio', 'estadio.id', '=', 'app_encuentro.id_app_estadio')
 					   ->join('view_estadoencuentro as estadoencuentro', 'estadoencuentro.id', '=', 'app_encuentro.estencuentro')
 			->select(
-			'equipoa.desnombre as desnombrea','equipoa.imgLogo as imglogoa',
-			'equipob.desnombre as desnombreb','equipob.imgLogo as imglogob',
+			'equipoa.desnombre as desnombrea','equipoa.imglogo as imglogoa',
+			'equipob.desnombre as desnombreb','equipob.imglogo as imglogob',
 			'estadio.desEstadio as desEstadio',
 			'estadoencuentro.label as estencuentroLabel',
 			'app_encuentro.*')
