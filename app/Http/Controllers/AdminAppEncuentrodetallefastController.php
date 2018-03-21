@@ -32,7 +32,7 @@
 			$this->col[] = ["label"=>"App Encuentro","name"=>"id_app_encuentro","join"=>"app_encuentro,id"];
 			$this->col[] = ["label"=>"App Equipo","name"=>"id_app_equipo","join"=>"app_equipo,desnombre"];
 			$this->col[] = ["label"=>"Acción","name"=>"id_app_accion","join"=>"app_accion,desnombre"];
-			$this->col[] = ["label"=>"Cantidad","name"=>"numTotal"];
+			$this->col[] = ["label"=>"Cantidad","name"=>"numtotal"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
